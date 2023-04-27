@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_0c076697_3567_4e93_b5c3_08d7a0f11525_Input_Variables_orderData = Any
+

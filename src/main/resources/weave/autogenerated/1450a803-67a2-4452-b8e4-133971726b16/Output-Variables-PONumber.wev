@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_1450a803_67a2_4452_b8e4_133971726b16_Output_Variables_PONumber = Any
+

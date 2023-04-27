@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	
+	<sub-flow name="create-order-subflow" doc:id="0c076697-3567-4e93-b5c3-08d7a0f11525" >
+		<logger level="INFO" doc:name="Start" doc:id="2fb21efe-cf0c-4462-a588-8859705accd2" message='#["Started flow :" ++ flow.name]'/>
+		<http:request method="POST" doc:name="create-order" doc:id="8382ff79-74c0-4601-a4e6-dd40cc95d161" config-ref="HTTP_Request_configuration" path="/order">
+			<http:body ><![CDATA[#[vars.orderData]]]></http:body>
+		</http:request>
+		<set-variable value="#[payload.orderId]" doc:name="orderId" doc:id="7b51e7ef-1bb1-4ced-b29d-5aaa773799d4" variableName="orderId"/>
+		<logger level="INFO" doc:name="End" doc:id="e9062636-3ce6-40f3-b085-f475f3efe2fe" message='#["Ended flow :" ++ flow.name]' />
+	</sub-flow>
+</mule>

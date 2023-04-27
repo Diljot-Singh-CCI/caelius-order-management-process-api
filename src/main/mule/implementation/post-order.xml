@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="post-order-sub-flow" doc:id="c9f3907d-db4f-44d0-a384-39f7a9077e7e" >
+		<logger level="INFO" doc:name="Start log" doc:id="aab222ec-f5c7-4d31-b1b0-4e23b3c35fe2" message='#[flow.name ++ " has started"]'/>
+		<set-variable value="#[payload.orderData.poNumber]" doc:name="PONumber" doc:id="3c9d096c-db69-42bd-9df2-354c1cd180ec" variableName="PONumber" />
+		<ee:transform doc:name="creating variables: customerData, itemsData, orderData" doc:id="1f389f5f-692d-459e-89b4-8dc554db2a04" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="orderData" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.orderData]]></ee:set-variable>
+				<ee:set-variable variableName="itemsData" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.items]]></ee:set-variable>
+				<ee:set-variable variableName="customerData" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.customer]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="create-order" doc:id="7e6ddacb-3f8d-44f1-9079-b848ea2519a0" name="create-order-subflow" />
+		<flow-ref doc:name="create-customer" doc:id="60097508-13f3-4469-b75b-5eb906cbdb70" name="create-customer-sub-flow" />
+		<flow-ref doc:name="create-item" doc:id="b9f55f24-033a-4088-b025-f3e0d2c755a9" name="create-items-sub-flow" />
+		<logger level="INFO" doc:name="End log" doc:id="cbbd17fa-1d29-459e-9173-261316242b41" message='#[{"Flow has ended":flow.name,&#10;	correlationId: vars.correlationId&#10;}]'/>
+	</sub-flow>
+</mule>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="create-items-sub-flow" doc:id="1450a803-67a2-4452-b8e4-133971726b16" >
+		<logger level="INFO" doc:name="Start logger" doc:id="2486fb32-b149-4146-8ca2-15765906adcd" message='#["Started flow :" ++ flow.name]'/>
+		<foreach doc:name="For Each" doc:id="4370736b-4eb3-4da7-9dcc-27c01c738d06" collection="#[vars.itemsData]">
+			<ee:transform doc:name="Adding OrderId" doc:id="b06b0675-0c3a-4b7a-a870-1decbaab12de">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload ++ {orderId: vars.orderId}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			<http:request method="POST" doc:name="create item" doc:id="2e61a6ef-9d5d-41b5-94df-25282c1d1d79" config-ref="HTTP_Request_configuration" path="/item">
+		</http:request>
+		</foreach>
+		<logger level="INFO" doc:name="End logger" doc:id="bfb5d207-05e8-41a4-8bac-576dd62260be" message='#["Ended flow :" ++ flow.name]'/>
+	
+</sub-flow>
+</mule>

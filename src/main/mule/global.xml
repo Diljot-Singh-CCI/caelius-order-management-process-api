@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<configuration doc:name="Configuration" doc:id="e774819a-c4f8-49b7-a38f-0748f2758b31" defaultErrorHandler-ref="common-error-handler" />
+<http:listener-config name="caelius-order-management-papi-httpListenerConfig">
+        <http:listener-connection host="${http.host}" port="${http.port}" readTimeout="${http.readTimeout}"/>
+    </http:listener-config>
+    <apikit:config name="caelius-order-management-papi-config" api="resource::ce235d46-115c-497c-b0e2-474afd80f5e9:caelius-order-management-papi:1.0.2:raml:zip:caelius-order-management-papi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="e4203ac8-714d-4ff4-88c8-4e56df78f322" basePath="/api" >
+		<http:request-connection host="micorp-orders-manage-sapi.us-e1.cloudhub.io" />
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="b9d28c0e-5228-4850-a237-d7c5b28d22b3" file="properties\config-${mule.env}.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="2b375347-70c7-4586-9b65-3ddad957f282" file="properties\common\common.yaml" />
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="51d63a33-2db3-4586-9455-517649a9d4b3" flowRef="caelius-order-management-papi-main" />
+	
+
+</mule>
